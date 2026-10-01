@@ -1,9 +1,9 @@
 import {
-  View,
-  Text,
-  StyleSheet,
   Image,
   ImageSourcePropType,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
 } from "react-native";
 
 type VehicleCardProps = {
@@ -12,6 +12,7 @@ type VehicleCardProps = {
   modelo: string;
   anio: number;
   kilometraje: string;
+  onPress?: () => void;
 };
 
 export default function VehicleCard({
@@ -20,9 +21,10 @@ export default function VehicleCard({
   modelo,
   anio,
   kilometraje,
+  onPress,
 }: VehicleCardProps) {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.8}>
       <Image source={imagen} style={styles.imagen} />
 
       <Text style={styles.nombre}>
@@ -31,7 +33,7 @@ export default function VehicleCard({
 
       <Text style={styles.detalle}>Año: {anio}</Text>
       <Text style={styles.detalle}>Kilometraje: {kilometraje}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 

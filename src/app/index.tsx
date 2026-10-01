@@ -1,5 +1,12 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
 import VehicleCard from "@/components/VehicleCard";
+import { useRouter } from "expo-router";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const vehiculos = [
   {
@@ -37,42 +44,58 @@ const vehiculos = [
 ];
 
 export default function HomeScreen() {
+  const router = useRouter();
+
   return (
-    <ScrollView
-      style={styles.scroll}
-      contentContainerStyle={styles.container}
-      showsVerticalScrollIndicator={true}
-    >
+    <View style={styles.container}>
       <Text style={styles.title}>ALPERIT</Text>
 
       <Text style={styles.subtitle}>Gestión de peritajes y vehículos</Text>
 
-      <View style={styles.lista}>
-        {vehiculos.map((vehiculo) => (
+      <TouchableOpacity
+        style={styles.botonSolicitudes}
+        onPress={() => router.push("/mis-solicitudes")}
+      >
+        <Text style={styles.textoBotonSolicitudes}>Mis solicitudes</Text>
+      </TouchableOpacity>
+
+      <FlatList
+        data={vehiculos}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
           <VehicleCard
-            key={vehiculo.id}
-            imagen={vehiculo.imagen}
-            marca={vehiculo.marca}
-            modelo={vehiculo.modelo}
-            anio={vehiculo.anio}
-            kilometraje={vehiculo.kilometraje}
+            imagen={item.imagen}
+            marca={item.marca}
+            modelo={item.modelo}
+            anio={item.anio}
+            kilometraje={item.kilometraje}
+            onPress={() =>
+              router.push({
+                pathname: "/detalle",
+                params: {
+                  marca: item.marca,
+                  modelo: item.modelo,
+                  anio: item.anio.toString(),
+                  kilometraje: item.kilometraje,
+                },
+              })
+            }
           />
-        ))}
-      </View>
-    </ScrollView>
+        )}
+        style={styles.lista}
+        contentContainerStyle={styles.listaContenido}
+        showsVerticalScrollIndicator={true}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  scroll: {
+  container: {
     flex: 1,
     backgroundColor: "#0b172a",
-  },
-
-  container: {
     alignItems: "center",
     paddingTop: 60,
-    paddingBottom: 40,
   },
 
   title: {
@@ -85,10 +108,29 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 18,
     marginTop: 10,
-    marginBottom: 30,
+    marginBottom: 20,
+  },
+
+  botonSolicitudes: {
+    backgroundColor: "#ffffff",
+    width: "90%",
+    padding: 14,
+    borderRadius: 10,
+    alignItems: "center",
+    marginBottom: 20,
+  },
+
+  textoBotonSolicitudes: {
+    color: "#0b172a",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 
   lista: {
     width: "90%",
+  },
+
+  listaContenido: {
+    paddingBottom: 40,
   },
 });
