@@ -1,13 +1,15 @@
 import { useSolicitudesStore } from "@/store/solicitudesStore";
+import * as ImagePicker from "expo-image-picker";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import {
-    Alert,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function SolicitudScreen() {
@@ -18,10 +20,41 @@ export default function SolicitudScreen() {
   const [nombre, setNombre] = useState("");
   const [telefono, setTelefono] = useState("");
   const [observaciones, setObservaciones] = useState("");
+  const [foto, setFoto] = useState<string | null>(null);
 
   const agregarSolicitud = useSolicitudesStore(
     (state) => state.agregarSolicitud,
   );
+
+  const elegirFoto = async () => {
+    const resultado = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      quality: 0.7,
+    });
+
+    if (!resultado.canceled) {
+      setFoto(resultado.assets[0].uri);
+    }
+  };
+
+  const tomarFoto = async () => {
+    const permiso = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (!permiso.granted) {
+      Alert.alert("Permiso necesario", "Necesitamos acceso a la cámara.");
+      return;
+    }
+
+    const resultado = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      quality: 0.7,
+    });
+
+    if (!resultado.canceled) {
+      setFoto(resultado.assets[0].uri);
+    }
+  };
 
   const enviarSolicitud = () => {
     if (!nombre || !telefono) {
@@ -37,6 +70,7 @@ export default function SolicitudScreen() {
       nombre: nombre,
       telefono: telefono,
       observaciones: observaciones,
+      foto: foto ?? undefined,
       estado: "Pendiente",
     });
 
@@ -48,6 +82,7 @@ export default function SolicitudScreen() {
     setNombre("");
     setTelefono("");
     setObservaciones("");
+    setFoto(null);
   };
 
   return (
@@ -87,6 +122,21 @@ export default function SolicitudScreen() {
         value={observaciones}
         onChangeText={setObservaciones}
       />
+
+      <TouchableOpacity style={styles.boton} onPress={elegirFoto}>
+        <Text style={styles.textoBoton}>📷 Adjuntar fotografía</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.boton} onPress={tomarFoto}>
+        <Text style={styles.textoBoton}>📸 Tomar fotografía</Text>
+      </TouchableOpacity>
+
+      {foto && (
+        <Image
+          source={{ uri: foto }}
+          style={{ width: 150, height: 120, marginTop: 10 }}
+        />
+      )}
 
       <TouchableOpacity style={styles.boton} onPress={enviarSolicitud}>
         <Text style={styles.textoBoton}>Registrar solicitud</Text>

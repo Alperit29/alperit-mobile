@@ -11,7 +11,7 @@ import {
 const vehiculos = [
   {
     id: 1,
-    imagen: require("../../assets/corolla.jpg"),
+    imagen: require("../../../assets/corolla.jpg"),
     marca: "Toyota",
     modelo: "Corolla",
     anio: 2023,
@@ -19,7 +19,7 @@ const vehiculos = [
   },
   {
     id: 2,
-    imagen: require("../../assets/hilux.jpg"),
+    imagen: require("../../../assets/hilux.jpg"),
     marca: "Toyota",
     modelo: "Hilux",
     anio: 2022,
@@ -27,7 +27,7 @@ const vehiculos = [
   },
   {
     id: 3,
-    imagen: require("../../assets/yaris.jpg"),
+    imagen: require("../../../assets/yaris.jpg"),
     marca: "Toyota",
     modelo: "Yaris",
     anio: 2024,
@@ -35,7 +35,7 @@ const vehiculos = [
   },
   {
     id: 4,
-    imagen: require("../../assets/sw4.jpg"),
+    imagen: require("../../../assets/sw4.jpg"),
     marca: "Toyota",
     modelo: "SW4",
     anio: 2021,

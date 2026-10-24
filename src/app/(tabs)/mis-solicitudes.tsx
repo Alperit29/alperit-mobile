@@ -1,11 +1,12 @@
 import { useSolicitudesStore } from "@/store/solicitudesStore";
 import { useRouter } from "expo-router";
 import {
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function MisSolicitudesScreen() {
@@ -16,6 +17,10 @@ export default function MisSolicitudesScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Mis solicitudes</Text>
+
+      <Text style={{ color: "#ffffff", marginBottom: 20 }}>
+        Total de solicitudes: {solicitudes.length}
+      </Text>
 
       {solicitudes.length === 0 ? (
         <View style={styles.vacio}>
@@ -41,6 +46,19 @@ export default function MisSolicitudesScreen() {
                 <Text style={styles.detalle}>
                   Observaciones: {item.observaciones}
                 </Text>
+              ) : null}
+
+              {item.foto ? (
+                <Image
+                  source={{ uri: item.foto }}
+                  style={{
+                    width: "100%",
+                    height: 180,
+                    borderRadius: 10,
+                    marginTop: 10,
+                  }}
+                  resizeMode="cover"
+                />
               ) : null}
 
               <Text style={styles.estado}>Estado: {item.estado}</Text>

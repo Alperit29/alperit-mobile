@@ -8,6 +8,7 @@ export type Solicitud = {
   nombre: string;
   telefono: string;
   observaciones: string;
+  foto?: string;
   estado: string;
 };
 
